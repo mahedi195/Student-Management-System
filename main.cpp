@@ -19,24 +19,30 @@ void filterStudents();
 void saveToFile();
 void loadFromFile();
 
-// Helper function to get a valid menu choice (0-8)
+//  function to get a valid menu choice (0-8)
 int getValidChoice()
 {
     int choice;
-    string input;
     while (true)
     {
-        cout << "Enter choice: ";
-        cin >> input;
-        if (input.size() == 1 && isdigit(input[0]))
+        std::cout << "Enter choice: ";
+        if (std::cin >> choice) // successfully read an integer
         {
-            choice = input[0] - '0';
-            if (choice >= 0 && choice <= 8) break;
+            if (choice >= 0 && choice <= 8)
+                return choice;
+            else
+                std::cout << "Invalid choice – enter a number between 0 and 8.\n";
         }
-        cout << "Invalid choice – enter a number between 0 and 8.\n";
+        else
+        {
+            std::cout << "Invalid input – please enter a number.\n";
+            std::cin.clear(); // clear error flags
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // discard invalid input
+        }
     }
-    return choice;
 }
+
+
 
 int main()
 {

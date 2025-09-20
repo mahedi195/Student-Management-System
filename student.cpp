@@ -14,7 +14,42 @@ using namespace std;
 //extern vector<Student> students;
 //static int nextId = 1;   //  next valid ID
 
-// ================= Helper Functions =================
+// =================  Functions =================
+
+
+// ----------------- Helper Functions -----------------
+string toLower(const string &s) {
+    string result = s;
+    transform(result.begin(), result.end(), result.begin(), ::tolower);
+    return result;
+}
+
+string trim(const string &s) {
+    size_t start = 0;
+    while (start < s.size() && isspace(s[start])) start++;
+    size_t end = s.size();
+    while (end > start && isspace(s[end-1])) end--;
+    return s.substr(start, end-start);
+}
+
+// ----------------- Search Helpers -----------------
+vector<int> searchByNamePartial(const vector<Student>& v, const string &query)
+{
+    vector<int> results;
+    string target = toLower(trim(query));
+    for(int i = 0; i < v.size(); i++)
+    {
+        string name = toLower(trim(v[i].name));
+        if(name.find(target) != string::npos)
+            results.push_back(i);
+    }
+    return results;
+}
+
+
+
+
+
 bool isValidName(const string &name)
 {
     if(name.empty()) return false;
@@ -39,7 +74,7 @@ bool isValidNumber(const string &s)
     return true;
 }
 
-// ================== Core Functions ==================
+// ==================  Functions ==================
 void addStudent()
 {
     cout << "Next ID must be: " << nextId << "\n";
@@ -250,13 +285,22 @@ void searchStudent()
     cin >> option;
     if(option == 1)
     {
-        cin.ignore();
-        string name;
-        getline(cin, name);
-        int idx = linearSearchByName(students, name);
-        if(idx != -1) displayAll(vector<Student> {students[idx]});
-        else cout << "Invalid name – not found.\n";
+        cin.ignore(); // clear newline
+        string query;
+        cout << "Enter name or part of name: ";
+        getline(cin, query);
+
+        vector<int> matches = searchByNamePartial(students, query);
+
+        if(!matches.empty())
+        {
+            vector<Student> results;
+            for(int idx : matches) results.push_back(students[idx]);
+            displayAll(results);
+        }
+        else cout << "No matching students found.\n";
     }
+
     else if(option == 2)
     {
         string input;

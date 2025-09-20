@@ -30,6 +30,9 @@ This is a **console-based Student Management System** implemented in C++ using D
 5. **Search Student**
    - Search by Name or Marks.
    - Displays "Invalid name/marks" if not found.
+   -Work with partial matches.
+   -Be case-insensitive.(mahedi= Mahedi).
+   -Display all matching students.(input-> Mahedi , output: Mahedi hasan and Mahedi Emon )
 
 6. **Sort Students**
    - Enter a marks range.
